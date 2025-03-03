@@ -51,10 +51,10 @@ All analysis is done using SQL queries on a structured database with tables for 
 
 ### **5. Business Health**
 - **Key Metrics**:  
-  - Total sales: `$X`  
-  - Total orders: `Y`  
-  - Average price per item: `$Z`  
-  - Total customers: `N`  
+  - Total sales: `$29356250`  
+  - Total orders: `27659`  
+  - Average price per item: `$486`  
+  - Total customers: `18484`  
 
 ---
 
