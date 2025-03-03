@@ -1,0 +1,74 @@
+/*
+===============================================================================
+Database Exploration
+===============================================================================
+Purpose:
+    - To explore the structure of the database, including the list of tables and their schemas.
+    - To inspect the columns and metadata for specific tables.
+
+Table Used:
+    - INFORMATION_SCHEMA.TABLES
+    - INFORMATION_SCHEMA.COLUMNS
+===============================================================================
+*/
+
+
+SELECT * FROM INFORMATION_SCHEMA.TABLES; 
+
+-- Explore All columns in the Database
+SELECT * FROM INFORMATION_SCHEMA.COLUMNS;
+
+--Demensions Exploration
+
+SELECT DISTINCT country FROM gold.dim_customers;
+
+SELECT DISTINCT category, subcategory, product_name FROM gold.dim_products
+ORDER BY 1,2,3;
+
+--Explore Date Data find the first and last order
+SELECT MIN(order_date) AS first_order_date,
+		MAX(order_date) AS last_order_date,
+		DATEDIFF(YEAR, MIN(order_date), MAX(order_date)) as order_range_years
+FROM gold.fact_sales;
+
+-- Checking for the youngest and oldest customer
+SELECT
+MIN(birthdate) as oldest_birthdate, 
+DATEDIFF(YEAR, MIN(birthdate), GETDATE()) AS oldest_birthdate,
+MAX(birthdate) as youngest_birthdate,
+DATEDIFF(YEAR, MAX(birthdate), GETDATE()) AS youngest_birthdate
+
+FROM gold.dim_customers;
+
+--Exploring the measures
+	-- FIND TOTAL SALES
+SELECT SUM(sales) as total_quantity FROM gold.fact_sales;
+	-- FIND HOW MANY ITEMS ARE SOLD
+SELECT COUNT(quantity) as Total_sold FROM gold.fact_sales;
+
+	-- FIND AVERAGE SELLING PRICE
+SELECT AVG(price) FROM gold.fact_sales;
+	-- TOTAL NUMBER OF ORDERS
+SELECT COUNT(order_number) as Total_orders FROM gold.fact_sales;
+SELECT COUNT(DISTINCT(order_number)) as Total_orders FROM gold.fact_sales;
+	-- FIND THE TOTAL NUMBER OF PRODUCTS
+SELECT COUNT(product_key) as Total_product FROM gold.dim_products;
+
+	--FIND THE TOTAL NUMBER OF CUSTOMER
+SELECT COUNT(customer_key) as Total_customer FROM gold.fact_sales;
+
+	-- FIND THE TOTAL NUMBER OF CUSTOMER THAT PLACED AN ORDER
+SELECT COUNT(DISTINCT(customer_key)) as Total_customer FROM gold.fact_sales;
+
+--Generate a report that shows all key metrics of the bussiness
+SELECT 'Total sales' as measure_name, SUM(sales) as measure_value  FROM gold.fact_sales
+UNION ALL
+SELECT 'Total quantity' as measure_name, SUM(quantity) as measure_value  FROM gold.fact_sales
+UNION ALL
+SELECT 'Average Price' as measure_name, AVG(price) as measure_value  FROM gold.fact_sales
+UNION ALL
+SELECT 'Total Orders' as measure_name, COUNT(DISTINCT(order_number)) as measure_value  FROM gold.fact_sales
+UNION ALL
+SELECT 'Total Product' as measure_name, COUNT(product_name) as measure_value  FROM gold.dim_products
+UNION ALL
+SELECT 'Total Customers' as measure_name, COUNT(customer_key) as measure_value  FROM gold.dim_customers;
