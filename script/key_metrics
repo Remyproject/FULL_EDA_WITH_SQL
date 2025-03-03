@@ -9,16 +9,18 @@ Purpose:
 Table Used:
     - INFORMATION_SCHEMA.TABLES
     - INFORMATION_SCHEMA.COLUMNS
+    - Demensions Exploration	
 ===============================================================================
 */
 
+USE Data_warehouse;
 
 SELECT * FROM INFORMATION_SCHEMA.TABLES; 
 
 -- Explore All columns in the Database
 SELECT * FROM INFORMATION_SCHEMA.COLUMNS;
 
---Demensions Exploration
+
 
 SELECT DISTINCT country FROM gold.dim_customers;
 
